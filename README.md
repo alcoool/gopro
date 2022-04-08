@@ -11,4 +11,3 @@ MAIN APP
 TEST APP
 
 run the app from tester.go
-observe console output
