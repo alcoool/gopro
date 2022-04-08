@@ -11,7 +11,7 @@ import (
 	"github.com/jarcoal/httpmock"
 )
 
-func Do (amount int) error {
+func Do(amount int) error {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 

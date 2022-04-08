@@ -24,11 +24,11 @@ func (db *DataBaseMock) Seed() error {
 	return nil
 }
 
-func (db *DataBaseMock) createTable (tableName string, fields string) error {
+func (db *DataBaseMock) createTable(tableName string, fields string) error {
 	return nil
 }
 
-func (db *DataBaseMock) truncateTable (tableName string) error {
+func (db *DataBaseMock) truncateTable(tableName string) error {
 	return nil
 }
 

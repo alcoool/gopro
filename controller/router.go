@@ -31,4 +31,3 @@ func Router(router *gin.Engine, database db.DataBaseInterface) http.Handler {
 
 	return router
 }
-

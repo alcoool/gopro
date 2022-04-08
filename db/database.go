@@ -28,7 +28,7 @@ type DataBase struct {
 
 func (db *DataBase) Connect() error {
 	connection, err := sql.Open("sqlite3", "./shop.db")
-	
+
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func (db *DataBase) Seed() error {
 		return err
 	}
 
-	statement, err := db.connection.Prepare( "INSERT INTO users (name, password, email) VALUES (?, ?, ?), (?, ?, ?)")
+	statement, err := db.connection.Prepare("INSERT INTO users (name, password, email) VALUES (?, ?, ?), (?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (db *DataBase) Seed() error {
 		return err
 	}
 
-	statement, err = db.connection.Prepare( "INSERT INTO products (name, price, stock) VALUES (?, ?, ?), (?, ?, ?)")
+	statement, err = db.connection.Prepare("INSERT INTO products (name, price, stock) VALUES (?, ?, ?), (?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -88,8 +88,8 @@ func (db *DataBase) Seed() error {
 	return nil
 }
 
-func (db *DataBase) createTable (tableName string, fields string) error {
-	statement, err := db.connection.Prepare( fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (%s)", tableName, fields))
+func (db *DataBase) createTable(tableName string, fields string) error {
+	statement, err := db.connection.Prepare(fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (%s)", tableName, fields))
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func (db *DataBase) createTable (tableName string, fields string) error {
 	return nil
 }
 
-func (db *DataBase) truncateTable (tableName string) error {
+func (db *DataBase) truncateTable(tableName string) error {
 	statement, err := db.connection.Prepare(fmt.Sprintf("DELETE FROM %s", tableName))
 	if err != nil {
 		return err
@@ -167,7 +167,7 @@ func (db *DataBase) GetProduct(productId int) (models.Product, error) {
 }
 
 func (db *DataBase) AddToCart(user models.User, product models.Product, quantity uint64) error {
-	statement, err := db.connection.Prepare( "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)")
+	statement, err := db.connection.Prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -214,7 +214,7 @@ func (db *DataBase) Checkout(user models.User, cartTotals map[int]int) error {
 	tx, err := db.connection.Begin()
 
 	if err != nil {
-		return  err
+		return err
 	}
 
 	cart := models.Cart{}
@@ -227,7 +227,7 @@ func (db *DataBase) Checkout(user models.User, cartTotals map[int]int) error {
 		if cart.Id == 0 {
 			err = tx.Rollback()
 			if err != nil {
-				return  err
+				return err
 			}
 			return errors.New(fmt.Sprintf("Product %d has insuficent stock", productId))
 		}
@@ -237,14 +237,14 @@ func (db *DataBase) Checkout(user models.User, cartTotals map[int]int) error {
 		if err != nil {
 			err = tx.Rollback()
 			if err != nil {
-				return  err
+				return err
 			}
-			return  err
+			return err
 		}
 
 		product, err := db.GetProduct(productId)
 		if err != nil {
-			return  err
+			return err
 		}
 
 		totalPrice = totalPrice + int(product.Price)
@@ -255,19 +255,19 @@ func (db *DataBase) Checkout(user models.User, cartTotals map[int]int) error {
 	if err != nil {
 		txErr := tx.Rollback()
 		if txErr != nil {
-			return  err
+			return err
 		}
 
 		return err
 	} else {
 		_, txErr := tx.Exec("DELETE FROM cart WHERE user_id = ?", user.Id)
 		if txErr != nil {
-			return  err
+			return err
 		}
 
 		txErr = tx.Commit()
 		if txErr != nil {
-			return  txErr
+			return txErr
 		}
 	}
 

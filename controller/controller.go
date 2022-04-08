@@ -21,7 +21,7 @@ type Controller struct {
 	DB *db.DataBaseInterface
 }
 
-func (ctrl *Controller) Seed (c *gin.Context) {
+func (ctrl *Controller) Seed(c *gin.Context) {
 	err := (*ctrl.DB).CreateDb()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -43,7 +43,7 @@ func (ctrl *Controller) Seed (c *gin.Context) {
 	return
 }
 
-func (ctrl *Controller) Login (c *gin.Context) {
+func (ctrl *Controller) Login(c *gin.Context) {
 	email := c.PostForm("email")
 	password := c.PostForm("password")
 
@@ -58,7 +58,7 @@ func (ctrl *Controller) Login (c *gin.Context) {
 
 	if user.Id == 0 {
 		c.JSON(http.StatusForbidden, gin.H{
-		"message": "not allowed",
+			"message": "not allowed",
 		})
 		return
 	}
@@ -92,7 +92,7 @@ func (ctrl *Controller) Login (c *gin.Context) {
 	return
 }
 
-func (ctrl *Controller) Logout (c *gin.Context) {
+func (ctrl *Controller) Logout(c *gin.Context) {
 	c.SetCookie("jwt", "", -1, "", "", false, true)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -101,7 +101,7 @@ func (ctrl *Controller) Logout (c *gin.Context) {
 	return
 }
 
-func (ctrl *Controller) AddToCart (c *gin.Context) {
+func (ctrl *Controller) AddToCart(c *gin.Context) {
 	user, err := ctrl.checkUser(c)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
@@ -169,7 +169,7 @@ func (ctrl *Controller) AddToCart (c *gin.Context) {
 	return
 }
 
-func (ctrl *Controller) Checkout (c *gin.Context) {
+func (ctrl *Controller) Checkout(c *gin.Context) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
